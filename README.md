@@ -32,5 +32,5 @@ Certifique-se de ter o **Python 3.10+** instalado.
 
 ### 2. Clone o Repositório
 ```bash
-git clone [https://github.com/pixelctechia/Docling-App.git](https://github.com/pixelctechia/Docling-App.git)
+git clone https://github.com/pixelctechia/Docling-App.git
 cd Docling-App

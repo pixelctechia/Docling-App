@@ -1,36 +1,40 @@
-# 🐬 Docling App - Extrator de Dados Web Open Source
+# 🐬 Docling App - O Extrator Essencial para RAG e LLMs
 
-> **Web Scraping Local, Privado e Sem Limites.**
-> Transforme sites complexos e dinâmicos (React, Next.js, Vue) em **Markdown** e **JSON** estruturado.
+> **Transforme a Web em Dados para sua IA.**
+> A ferramenta definitiva para quem trabalha com **RAG (Retrieval-Augmented Generation)**. Capture sites complexos (React, Next.js) e gere datasets limpos em **Markdown** e **JSON**.
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
-![Technology](https://img.shields.io/badge/Tech-Docling%20%7C%20Playwright%20%7C%20Streamlit-orange)
+![RAG Ready](https://img.shields.io/badge/RAG-Ready-purple)
+![Status](https://img.shields.io/badge/Status-Active%20Dev-orange)
 
-## 🚀 Sobre o Projeto
+## 🎯 Por que usar este projeto?
 
-O **Docling App** é uma solução robusta para capturar dados da web que roda 100% na sua máquina local. Diferente de scrapers comuns que falham em sites modernos, este sistema utiliza um navegador real automatizado para renderizar JavaScript e capturar o conteúdo real.
+Se você trabalha com **LLMs (Large Language Models)** ou está construindo sistemas de **RAG**, sabe que a qualidade da resposta da sua IA depende da qualidade dos dados que você fornece (Garbage In, Garbage Out).
 
-### ✨ Funcionalidades Principais
+O **Docling App** foi criado para resolver a maior dor de cabeça da engenharia de dados para IA: **Extrair documentação útil de sites modernos e dinâmicos.**
 
-- **🕷️ Crawler Inteligente:** Escolha entre baixar uma **Página Única** ou rastrear o **Site Completo** (segue links internos automaticamente).
-- **📜 Auto-Scroll Engine:** Simula o comportamento humano de rolar a página para forçar o carregamento de imagens e textos "Lazy Load" (essencial para sites modernos).
-- **🧠 Docling AI:** Utiliza o motor da IBM/Docling para entender tabelas complexas e layout de documentos.
-- **🛡️ Anti-Bloqueio:** Navegação via Chromium Headless com Headers de usuário real para evitar detecção básica de robôs.
-- **📂 Saída Estruturada:** Gera arquivos `.md` (Markdown) prontos para LLMs e `.json` com metadados.
-- **💾 Histórico Local:** Banco de dados SQLite integrado para registrar todas as suas conversões.
+Diferente de scrapers comuns que quebram com JavaScript ou entregam HTML sujo, este sistema entrega:
+1.  **Markdown Limpo:** Perfeito para ser "embedado" em bancos vetoriais (ChromaDB, Pinecone).
+2.  **JSON Estruturado:** Ideal para fine-tuning e preservação de metadados.
 
 ---
 
-## 🛠️ Instalação (Passo a Passo)
+## 🚀 Funcionalidades Principais
 
-Siga estes passos para rodar o sistema no seu ambiente (Ubuntu/Linux/Windows).
+- **🕷️ Crawler Inteligente:**
+    - **Modo Página Única:** Capture uma documentação específica.
+    - **Modo Site Completo:** Baixe portais de documentação inteiros recursivamente.
+- **📜 Engine de Auto-Scroll:** Simula comportamento humano para capturar conteúdo "Lazy Load" que scrapers tradicionais perdem.
+- **🧠 Docling AI:** Preserva a estrutura semântica de tabelas e seções, essencial para que a LLM entenda o contexto.
+- **🛡️ Anti-Bloqueio:** Navegação via Chromium Headless com perfil de usuário real.
+- **🔮 Roadmap (Em Breve):** O sistema está em evolução constante. Novas funcionalidades para tratamento de dados e integração direta com bancos vetoriais estão no radar.
 
-### 1. Pré-requisitos
-Certifique-se de ter o **Python 3.10+** instalado.
+---
 
-### 2. Clone o Repositório
+## 🛠️ Instalação (Ubuntu/Linux)
+
+### 1. Clone o Repositório
 ```bash
-git clone https://github.com/pixelctechia/Docling-App.git
+git clone [https://github.com/pixelctechia/Docling-App.git
 cd Docling-App

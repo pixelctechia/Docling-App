@@ -1,0 +1,21 @@
+# Python e Venv
+venv/
+__pycache__/
+*.pyc
+
+# Ambiente e Logs
+.env
+.DS_Store
+
+# Banco de Dados Local (Não enviar o histórico!)
+*.db
+src/database/*.db
+
+# Arquivos de Saída e Temporários
+outputs/
+temp_*.html
+docling_output/
+
+# Logs de IDE
+.vscode/
+.idea/

@@ -76,10 +76,19 @@ with st.sidebar:
     
     st.write("---")
     st.info("ℹ️ O sistema usa Auto-Scroll para garantir captura total de sites dinâmicos (React/Vue).")
+    
+    st.write("---")
+    st.markdown("""
+        <div style='text-align: center'>
+            <p>🚀 Desenvolvido por <b><a href='https://www.pixelctech.com.br' target='_blank'>Pixelc Tech</a></b></p>
+            <p style='font-size: 0.8em; color: gray;'>Sistema Open Source livre para todos.</p>
+        </div>
+    """, unsafe_allow_html=True)
 
 # --- ÁREA PRINCIPAL ---
-st.title("🔓 Docling App - Open Source")
-st.markdown("### Extrator de Dados Web Sem Restrições")
+st.title("🔓 Docling App - Pixelc Tech")
+st.markdown("### Extrator de Dados Web Sem Restrições (Open Source)")
+st.write("Desenvolvido por [Pixelc Tech](https://www.pixelctech.com.br) - Transformando a web em dados para IA.")
 
 url_input = st.text_input("🔗 Cole a URL do Website aqui:", placeholder="https://exemplo.com.br")
 

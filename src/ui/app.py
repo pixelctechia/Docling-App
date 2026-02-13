@@ -82,13 +82,14 @@ with st.sidebar:
         <div style='text-align: center'>
             <p>🚀 Desenvolvido por <b><a href='https://www.pixelctech.com.br' target='_blank'>Pixelc Tech</a></b></p>
             <p style='font-size: 0.8em; color: gray;'>Sistema Open Source livre para todos.</p>
+            <p><a href='https://github.com/pixelctechia/Docling-App' target='_blank'>⭐ Ver no GitHub</a></p>
         </div>
     """, unsafe_allow_html=True)
 
 # --- ÁREA PRINCIPAL ---
 st.title("🔓 Docling App - Pixelc Tech")
 st.markdown("### Extrator de Dados Web Sem Restrições (Open Source)")
-st.write("Desenvolvido por [Pixelc Tech](https://www.pixelctech.com.br) - Transformando a web em dados para IA.")
+st.write("Desenvolvido por [Pixelc Tech](https://www.pixelctech.com.br) | Repositório: [GitHub](https://github.com/pixelctechia/Docling-App)")
 
 url_input = st.text_input("🔗 Cole a URL do Website aqui:", placeholder="https://exemplo.com.br")
 

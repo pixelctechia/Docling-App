@@ -177,3 +177,5 @@ Docling-App/
 ## 🤝 Contribuição
 
 Este é um projeto Open Source focado na liberdade de dados. Sinta-se à vontade para abrir Issues ou Pull Requests para melhorar o algoritmo.
+
+Desenvolvido por **Pixelc Tech** - [www.pixelctech.com.br](https://www.pixelctech.com.br)

@@ -24,6 +24,7 @@ from src.config.settings import (
     UI_DEFAULT_MAX_PAGES,
     UI_MAX_PAGES_LIMIT,
 )
+from src.config.presets import DEFAULT_PRESET_KEY, get_usage_preset, list_usage_presets
 from src.database import db_manager
 
 add_task = db_manager.add_task
@@ -185,23 +186,102 @@ def parse_textarea_paths(texto: str) -> list[str]:
                 itens.append(caminho)
     return itens
 
+def format_paths_for_textarea(caminhos: list[str]) -> str:
+    """Transforma uma lista de caminhos em texto para a UI."""
+    return "\n".join(caminhos)
+
+def aplicar_preset_na_sessao(preset) -> None:
+    """Aplica os valores de um preset no estado da interface."""
+    preset_ui = preset.to_ui_state()
+    st.session_state["preset_key"] = preset.key
+    st.session_state["modo_extracao"] = preset_ui["modo_extracao"]
+    st.session_state["output_format"] = preset_ui["output_format"]
+    st.session_state["max_pages"] = preset_ui["max_pages"]
+    st.session_state["max_depth"] = preset_ui["max_depth"]
+    st.session_state["include_paths_text"] = format_paths_for_textarea(preset_ui["include_paths"])
+    st.session_state["exclude_paths_text"] = format_paths_for_textarea(preset_ui["exclude_paths"])
+    st.session_state["ignorar_arquivos_binarios"] = preset_ui["ignorar_arquivos_binarios"]
+    st.session_state["gerar_rag_artifacts"] = preset_ui["gerar_rag_artifacts"]
+    st.session_state["rag_chunk_size"] = preset_ui["rag_chunk_size"]
+    st.session_state["rag_chunk_overlap"] = preset_ui["rag_chunk_overlap"]
+    st.session_state["_preset_aplicado_key"] = preset.key
+    st.session_state["_preset_personalizado_manual"] = False
+
+def estado_sidebar_diferente_do_preset(preset, estado_atual: dict) -> bool:
+    """Verifica se o usuario alterou manualmente a configuracao em relacao ao preset."""
+    preset_ui = preset.to_ui_state()
+    return any(
+        [
+            estado_atual["modo_extracao"] != preset_ui["modo_extracao"],
+            estado_atual["output_format"] != preset_ui["output_format"],
+            estado_atual["max_pages"] != preset_ui["max_pages"],
+            estado_atual["max_depth"] != preset_ui["max_depth"],
+            parse_textarea_paths(estado_atual["include_paths_text"]) != preset_ui["include_paths"],
+            parse_textarea_paths(estado_atual["exclude_paths_text"]) != preset_ui["exclude_paths"],
+            estado_atual["ignorar_arquivos_binarios"] != preset_ui["ignorar_arquivos_binarios"],
+            estado_atual["gerar_rag_artifacts"] != preset_ui["gerar_rag_artifacts"],
+            estado_atual["rag_chunk_size"] != preset_ui["rag_chunk_size"],
+            estado_atual["rag_chunk_overlap"] != preset_ui["rag_chunk_overlap"],
+        ]
+    )
+
 def renderizar_sidebar_configuracoes():
     """Renderiza o menu de configuracoes e devolve os valores da UI."""
     st.write("---")
-    st.subheader("1. Modo de Extração")
+    presets = list_usage_presets()
+    preset_labels = [preset.label for preset in presets]
+    preset_keys_by_label = {preset.label: preset.key for preset in presets}
+
+    st.subheader("1. Preset de Uso")
+    preset_label_selecionado = st.selectbox(
+        "Escolha um objetivo pronto",
+        options=preset_labels,
+        index=next(
+            (
+                indice
+                for indice, preset in enumerate(presets)
+                if preset.key == st.session_state.get("preset_key", DEFAULT_PRESET_KEY)
+            ),
+            0,
+        ),
+        help="Os presets preenchem automaticamente a configuracao para cenarios comuns e ajudam a acelerar o uso da ferramenta."
+    )
+    preset_ativo = get_usage_preset(preset_keys_by_label[preset_label_selecionado])
+    preservar_personalizado_manual = (
+        preset_ativo.key == DEFAULT_PRESET_KEY
+        and st.session_state.get("_preset_personalizado_manual", False)
+    )
+    if st.session_state.get("_preset_aplicado_key") != preset_ativo.key and not preservar_personalizado_manual:
+        aplicar_preset_na_sessao(preset_ativo)
+
+    st.session_state["preset_key"] = preset_ativo.key
+    st.caption(f"Preset ativo: **{preset_ativo.label}**")
+    if preset_ativo.key == DEFAULT_PRESET_KEY and st.session_state.get("_preset_personalizado_manual", False):
+        st.warning("Modo Personalizado ativo: voce alterou manualmente uma ou mais configuracoes do preset.")
+    elif preset_ativo.key == DEFAULT_PRESET_KEY:
+        st.info("Modo Personalizado: voce tem liberdade total para ajustar todos os campos manualmente.")
+    else:
+        st.success(f"Preset aplicado: {preset_ativo.description}")
+        st.caption("Se voce editar os campos manualmente, a interface muda automaticamente para o modo Personalizado.")
+
+    st.subheader("2. Modo de Extração")
     modo_extracao = st.radio(
         "Como você quer capturar?",
         options=["Página Única (Apenas o Link)", "Site Completo (Crawler)"],
-        index=0,
+        index=["Página Única (Apenas o Link)", "Site Completo (Crawler)"].index(
+            st.session_state.get("modo_extracao", "Página Única (Apenas o Link)")
+        ),
+        key="modo_extracao",
         help="Página Única: Baixa apenas o link informado.\nSite Completo: Segue os links internos."
     )
 
-    st.subheader("2. Limites")
+    st.subheader("3. Limites")
     max_pages = st.number_input(
         "Limite Máximo de Páginas",
         min_value=1,
         max_value=UI_MAX_PAGES_LIMIT,
-        value=UI_DEFAULT_MAX_PAGES,
+        value=st.session_state.get("max_pages", UI_DEFAULT_MAX_PAGES),
+        key="max_pages",
         disabled=(modo_extracao == "Página Única (Apenas o Link)"),
         help="Se escolher 'Página Única', este valor será ignorado (será 1)."
     )
@@ -210,61 +290,92 @@ def renderizar_sidebar_configuracoes():
         "Profundidade Máxima do Crawler",
         min_value=0,
         max_value=10,
-        value=UI_DEFAULT_MAX_DEPTH,
+        value=st.session_state.get("max_depth", UI_DEFAULT_MAX_DEPTH),
+        key="max_depth",
         disabled=(modo_extracao == "Página Única (Apenas o Link)"),
         help="0 captura apenas a URL inicial. 1 segue os links encontrados nela, e assim por diante."
     )
 
-    st.subheader("3. Formato de Saída")
+    st.subheader("4. Formato de Saída")
     output_format = st.radio(
         "Salvar arquivos como:",
         options=["Markdown", "JSON", "Ambos"],
-        index=2
+        index=["Markdown", "JSON", "Ambos"].index(st.session_state.get("output_format", "Ambos")),
+        key="output_format",
     )
 
-    st.subheader("4. Filtros do Crawler")
+    st.subheader("5. Filtros do Crawler")
     include_paths_text = st.text_area(
         "Incluir apenas caminhos",
-        value="",
+        value=st.session_state.get("include_paths_text", ""),
+        key="include_paths_text",
         disabled=(modo_extracao == "Página Única (Apenas o Link)"),
         help="Opcional. Um caminho por linha ou separados por vírgula. Ex.: /blog ou /docs"
     )
     exclude_paths_text = st.text_area(
         "Ignorar caminhos",
-        value="",
+        value=st.session_state.get("exclude_paths_text", ""),
+        key="exclude_paths_text",
         disabled=(modo_extracao == "Página Única (Apenas o Link)"),
         help="Opcional. Um caminho por linha ou separados por vírgula. Ex.: /admin ou /login"
     )
     ignorar_arquivos_binarios = st.checkbox(
         "Ignorar arquivos não HTML comuns",
-        value=True,
+        value=st.session_state.get("ignorar_arquivos_binarios", True),
+        key="ignorar_arquivos_binarios",
         help="Evita seguir links para imagens, PDFs, arquivos compactados, mídia, fontes e assets."
     )
 
-    st.subheader("5. Saída para RAG")
+    st.subheader("6. Saída para RAG")
     gerar_rag_artifacts = st.checkbox(
         "Gerar arquivo pronto para RAG (.jsonl)",
-        value=RAG_DEFAULT_ENABLED,
+        value=st.session_state.get("gerar_rag_artifacts", RAG_DEFAULT_ENABLED),
+        key="gerar_rag_artifacts",
         help="Cria um arquivo consolidado `rag_chunks.jsonl` com chunks e metadados por página."
     )
     rag_chunk_size = st.number_input(
         "Tamanho do chunk RAG",
         min_value=200,
         max_value=5000,
-        value=RAG_DEFAULT_CHUNK_SIZE,
+        value=st.session_state.get("rag_chunk_size", RAG_DEFAULT_CHUNK_SIZE),
         step=100,
+        key="rag_chunk_size",
         disabled=not gerar_rag_artifacts
     )
     rag_chunk_overlap = st.number_input(
         "Sobreposição do chunk RAG",
         min_value=0,
         max_value=2000,
-        value=RAG_DEFAULT_CHUNK_OVERLAP,
+        value=st.session_state.get("rag_chunk_overlap", RAG_DEFAULT_CHUNK_OVERLAP),
         step=50,
+        key="rag_chunk_overlap",
         disabled=not gerar_rag_artifacts
     )
 
+    estado_atual = {
+        "modo_extracao": modo_extracao,
+        "output_format": output_format,
+        "max_pages": max_pages,
+        "max_depth": max_depth,
+        "include_paths_text": include_paths_text,
+        "exclude_paths_text": exclude_paths_text,
+        "ignorar_arquivos_binarios": ignorar_arquivos_binarios,
+        "gerar_rag_artifacts": gerar_rag_artifacts,
+        "rag_chunk_size": rag_chunk_size,
+        "rag_chunk_overlap": rag_chunk_overlap,
+    }
+    if (
+        preset_ativo.key != DEFAULT_PRESET_KEY
+        and estado_sidebar_diferente_do_preset(preset_ativo, estado_atual)
+    ):
+        st.session_state["preset_key"] = DEFAULT_PRESET_KEY
+        st.session_state["_preset_personalizado_manual"] = True
+        st.rerun()
+
     return {
+        "preset_key": preset_ativo.key,
+        "preset_label": preset_ativo.label,
+        "preset_description": preset_ativo.description,
         "modo_extracao": modo_extracao,
         "max_pages": max_pages,
         "max_depth": max_depth,

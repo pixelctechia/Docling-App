@@ -10,6 +10,7 @@ O projeto recebeu uma grande evolução técnica e visual, incluindo:
 - crawler mais robusto para sites modernos;
 - saída pronta para RAG com `rag_chunks.jsonl`;
 - histórico local mais rico;
+- presets de uso para cenários reais;
 - tutorial integrado na interface;
 - redesign premium da experiência de uso;
 - melhorias de responsividade para mobile;
@@ -63,6 +64,7 @@ Com o Docling App, você consegue:
   - Modo crawler para navegar recursivamente por links internos
 
 - **🎯 Controle Total da Coleta**
+  - presets de uso para objetivos reais
   - limite máximo de páginas
   - profundidade máxima
   - filtros de inclusão e exclusão de caminhos
@@ -214,6 +216,7 @@ O sistema vai abrir automaticamente no seu navegador padrão, no endereço: 👉
 ### 💡 Fluxo de Trabalho Atual
 
 - Cole a URL do site alvo.
+- Escolha um **preset de uso** se quiser acelerar a configuração.
 - Escolha entre **Página Única** ou **Site Completo (Crawler)**.
 - Defina o limite de páginas e, se quiser, a profundidade máxima.
 - Use filtros opcionais de caminhos para restringir o crawl.
@@ -231,6 +234,21 @@ Você sai da interface com:
 - arquivos organizados por domínio e data
 - artefatos para RAG quando ativados
 - histórico salvo localmente
+
+### Presets de Uso
+
+O sistema agora conta com presets prontos para acelerar cenários comuns:
+
+- **Personalizado**
+  - liberdade total para configurar tudo manualmente
+- **Site Institucional para Chatbot**
+  - pensado para páginas institucionais, serviços e suporte
+- **Documentação Técnica**
+  - ideal para help centers, docs e bases técnicas
+- **Base para RAG**
+  - ajustado para geração de conteúdo pronto para embeddings e recuperação de contexto
+
+Se você alterar manualmente um preset aplicado, a interface muda automaticamente para **Personalizado**.
 - pacote pronto para download ou uso imediato
 
 ### Entrypoint Recomendado

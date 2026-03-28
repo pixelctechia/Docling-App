@@ -2,7 +2,7 @@
 
 ## Título sugerido
 
-`v1.1.0 - Extração web mais robusta, RAG, tutorial integrado e nova interface`
+`v1.1.0 - Extração web mais robusta, presets de uso, RAG e nova interface`
 
 ## Descrição pronta para publicar
 
@@ -15,6 +15,7 @@ O projeto saiu de uma base funcional de extração web para uma aplicação mais
 - crawler mais confiável para sites modernos;
 - melhor tratamento de URLs e rotas SPA;
 - filtros mais avançados para controlar a coleta;
+- presets de uso para objetivos reais;
 - geração de artefatos prontos para RAG;
 - histórico local mais rico e mais útil;
 - tutorial integrado para facilitar o uso por qualquer pessoa;
@@ -47,9 +48,11 @@ O projeto saiu de uma base funcional de extração web para uma aplicação mais
 
 - nova tela principal com visual mais profissional;
 - sidebar com identidade visual premium;
+- presets de uso com configuração automática;
 - novo menu `Tutorial`;
 - tutorial completo em linguagem simples;
 - resumo visual das configurações atuais;
+- troca automática para modo `Personalizado` quando o usuário altera um preset;
 - melhor organização da área de execução;
 - melhorias nas mensagens, estados vazios e ações finais;
 - ajustes para melhorar a experiência em mobile.
@@ -64,6 +67,7 @@ O projeto saiu de uma base funcional de extração web para uma aplicação mais
 #### Estrutura e qualidade
 
 - centralização de configurações do projeto;
+- criação de camada dedicada para presets de uso;
 - criação de módulo dedicado para artefatos;
 - entrypoint principal mais claro com `streamlit_app.py`;
 - atualização do README;
@@ -79,8 +83,8 @@ venv/bin/python -m unittest discover -s tests -v
 
 Resultado:
 
-- 14 testes executados
-- 14 testes aprovados
+- 19 testes executados
+- 19 testes aprovados
 
 ### Observação
 
@@ -93,4 +97,4 @@ Para rodar a aplicação e os testes corretamente, o recomendado é usar sempre 
 
 ## Versão curta para release rápida
 
-`v1.1.0` entrega uma evolução grande no Docling App: crawler mais robusto, melhor tratamento de URLs, geração de artefatos para RAG, histórico local enriquecido, tutorial integrado, redesign premium da interface e melhorias para mobile. Também adiciona base inicial de testes automatizados e melhora a estrutura geral do projeto para uso mais confiável no dia a dia.
+`v1.1.0` entrega uma evolução grande no Docling App: crawler mais robusto, presets de uso para cenários reais, melhor tratamento de URLs, geração de artefatos para RAG, histórico local enriquecido, tutorial integrado, redesign premium da interface e melhorias para mobile. Também amplia a suíte automatizada e melhora a estrutura geral do projeto para uso mais confiável no dia a dia.

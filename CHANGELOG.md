@@ -15,6 +15,7 @@ Os principais ganhos desta entrega foram:
 - histórico local mais rico;
 - central de histórico com ações operacionais;
 - geração de artefatos para RAG;
+- presets de uso para cenarios reais;
 - interface mais clara, premium e amigável;
 - tutorial integrado para usuários iniciantes;
 - melhorias de responsividade para mobile;
@@ -66,6 +67,10 @@ Os principais ganhos desta entrega foram:
 - botão para limpar histórico com confirmação;
 - botão para limpar arquivos extraídos em `outputs` com confirmação;
 - mini cards com contadores de registros, pastas e arquivos;
+- novo sistema de presets de uso na sidebar;
+- presets iniciais para chatbot institucional, documentação técnica e base para RAG;
+- aplicação automática das configurações do preset na interface;
+- mudança automática para modo `Personalizado` quando o usuário altera manualmente um preset aplicado;
 - melhorias de legibilidade e uso em telas menores.
 
 ### Qualidade e Estrutura do Projeto
@@ -78,6 +83,7 @@ Os principais ganhos desta entrega foram:
 - atualização do `README.md` com linguagem mais comercial;
 - criação de `CHANGELOG.md` e `RELEASE_GITHUB.md` para documentação de releases;
 - criação de testes automatizados com `unittest`.
+- criação de testes automatizados para a camada de presets.
 
 ### Validação
 
@@ -89,8 +95,8 @@ venv/bin/python -m unittest discover -s tests -v
 
 Resultado da última validação:
 
-- 14 testes executados;
-- 14 testes aprovados.
+- 19 testes executados;
+- 19 testes aprovados.
 - compilações locais de verificação executadas com `python -m compileall` nos módulos atualizados de UI e banco.
 
 ### Observações
